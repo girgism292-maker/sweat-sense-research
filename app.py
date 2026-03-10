@@ -2,19 +2,19 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
-# --- APP STYLING ---
-st.set_page_config(page_title="SweatSense AI - BME Research", layout="wide")
+# APP STYLING 
+st.set_page_config(page_title="SweatSensor - BME Research", layout="wide")
 
-st.title("🛡️ SweatSense: Heat-Stress Monitoring")
+st.title("SweatSense: Heat-Stress Monitoring")
 st.markdown("### Low-Cost Enzymatic Patch with Kinetic Correction & Physiological Modeling")
 st.write("---")
 
-# --- SIDEBAR: USER PROFILE (Chapter 13 Inputs) ---
+# SIDEBAR: USER PROFILE (Chapter 13 Inputs) 
 st.sidebar.header("👤 User Profile")
 body_mass = st.sidebar.number_input("Initial Body Mass (kg)", value=80, help="Required for Chapter 13 Fluid Balance Integral")
 work_duration = st.sidebar.slider("Work Duration (minutes)", 0, 180, 45)
 
-# --- MAIN UI: SENSOR INPUTS (Chapter 8 Inputs) ---
+# MAIN UI: SENSOR INPUTS (Chapter 8 Inputs) 
 col1, col2 = st.columns(2)
 
 with col1:
@@ -22,7 +22,7 @@ with col1:
     intensity = st.slider("Color Intensity (0-100)", 0, 100, 65, help="Raw optical signal from phone camera")
     temp_c = st.slider("Skin/Ambient Temp (°C)", 20, 45, 35, help="Required for Arrhenius Temperature Correction")
 
-# --- THE ENGINEERING "BRAIN" ---
+# THE ENGINEERING "BRAIN" 
 def calculate_risk(intensity, temp_c, time_min, mass):
     # 1. CHAPTER 8: Kinetic Correction (Michaelis-Menten)
     V_max = 100 
@@ -45,7 +45,7 @@ def calculate_risk(intensity, temp_c, time_min, mass):
 
 lac, dehy = calculate_risk(intensity, temp_c, work_duration, body_mass)
 
-# --- THE OUTPUTS ---
+# THE OUTPUTS 
 with col2:
     st.header("📊 Real-Time Risk Analysis")
     
@@ -62,7 +62,7 @@ with col2:
     else:
         st.success("✅ LOW RISK: Physiological strain is within safe limits.")
 
-# --- EDUCATIONAL SECTION ---
+# EDUCATIONAL SECTION
 with st.expander("View Engineering Math"):
     st.latex(r"Lactate\ [S] = \frac{K_m \cdot V_{corr}}{V_{max} - V_{corr}}")
     st.latex(r"Dehydration\ \% = \frac{\int_{0}^{t} \dot{V}_{sweat} \, dt}{Mass} \times 100")
